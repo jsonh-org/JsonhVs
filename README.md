@@ -17,6 +17,8 @@ JsonhVs is a syntax highlighter for [JSONH V2](https://github.com/jsonh-org/Json
 
 <img src="https://github.com/jsonh-org/JsonhVs/blob/main/Example.png?raw=true"/>
 
-## Note
+## Features
 
-This extension is based on [JsonhVscode](https://github.com/jsonh-org/JsonhVscode).
+- JSONH syntax highlighter
+
+This extension is based on [JsonhVscode](https://github.com/jsonh-org/JsonhVscode), which has more features.
