@@ -1,0 +1,362 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "JSONH",
+	"scopeName": "source.jsonh",
+	"fileTypes": [ "jsonh" ],
+	"foldingStartMarker": "(?x:^[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]*[{\\[](?!.*[}\\]],?[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]*$)|[{\\[][\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]*$)",
+	"foldingStopMarker": "(?x:^[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]*[}\\]])",
+	"patterns": [
+		{ "include": "#non-string-element" },
+		{ "include": "#property" },
+		{ "include": "#string" },
+		{ "include": "#invalid" }
+	],
+	"repository": {
+		"comment": {
+			"patterns": [
+				{
+					"name": "comment.line.jsonh",
+					"match": "\\#.*"
+				},
+				{
+					"name": "comment.line.double-slash.jsonh",
+					"match": "\\/\\/.*"
+				},
+				{
+					"name": "comment.block.jsonh",
+					"begin": "\\/(\\=*)\\*",
+  					"end": "\\*\\1\\/"
+				}
+			]
+		},
+		"element": {
+			"patterns": [
+				{ "include": "#non-string-element" },
+				{ "include": "#string" }
+			]
+		},
+		"non-string-element": {
+			"patterns": [
+				{ "include": "#comment" },
+				{ "include": "#array" },
+				{ "include": "#object" },
+				{ "include": "#named-literal" },
+				{ "include": "#number" }
+			]
+		},
+		"array": {
+			"name": "meta.structure.array.jsonh",
+			"begin": "\\[",
+			"end": "\\]",
+			"beginCaptures": {
+				"0": { "name": "punctuation.definition.array.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.definition.array.end.jsonh" }
+			},
+			"patterns": [
+				{ "include": "#item" },
+				{ "include": "#invalid" }
+			]
+		},
+		"item": {
+			"patterns": [
+				{ "include": "#element" },
+				{
+					"name": "punctuation.separator.array.jsonh",
+					"match": "(?<!,),"
+				},
+				{ "include": "#invalid" }
+			]
+		},
+		"object": {
+			"name": "meta.structure.dictionary.jsonh",
+			"begin": "\\{",
+			"end": "\\}",
+			"beginCaptures": {
+				"0": { "name": "punctuation.definition.dictionary.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.definition.dictionary.end.jsonh" }
+			},
+			"patterns": [
+				{ "include": "#property" },
+				{ "include": "#invalid" }
+			]
+		},
+		"property": {
+			"patterns": [
+				{ "include": "#comment" },
+				{ "include": "#property-name" },
+				{
+					"name": "meta.structure.dictionary.value.jsonh",
+					"begin": ":",
+					"end": ",|(?=^[^:]*:)",
+					"beginCaptures": {
+						"0": { "name": "punctuation.separator.dictionary.key-value.jsonh" }
+					},
+					"endCaptures": {
+						"1": { "name": "punctuation.separator.dictionary.pair.jsonh" }
+					},
+					"patterns": [
+						{ "include": "#element" },
+						{
+							"name": "punctuation.separator.dictionary.jsonh",
+							"match": "(?<!,),"
+						},
+						{ "include": "#invalid" }
+					]
+				},
+				{ "include": "#invalid" }
+			]
+		},
+		"named-literal": {
+			"name": "constant.language.jsonh",
+			"match": "(true|false|null)(?![\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]*[^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\,\\[\\]\\{\\}\\/\\#\\\"\\'\\@])",
+			"comment": "[true, false, null] NOT<(whitespace) quoteless-string-or-property>"
+		},
+		"number": {
+			"patterns": [
+				{ "include": "#hexadecimal-number" },
+				{ "include": "#binary-number" },
+				{ "include": "#octal-number" },
+				{ "include": "#decimal-number" }
+			]
+		},
+		"decimal-number": {
+			"name": "constant.numeric.decimal.jsonh",
+			"match": "[-+]?((([0-9](_*[0-9])*)(\\.)?(([0-9](_*[0-9])*))?)|(\\.([0-9](_*[0-9])*)))([eE][-+]?((([0-9](_*[0-9])*)(\\.)?(([0-9](_*[0-9])*))?)|(\\.([0-9](_*[0-9])*))))?(?![\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]*[^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\,\\[\\]\\{\\}\\/\\#\\\"\\'\\@])",
+			"comment": "(sign) [digits (dot) (digits), dot digits] (exponent (sign) [digits (dot) (digits), dot digits]) NOT<(whitespace) quoteless-string-or-property>"
+		},
+		"hexadecimal-number": {
+			"name": "constant.numeric.hexadecimal.jsonh",
+			"match": "[-+]?0[xX]((([0-9a-fA-F](_*[0-9a-fA-F])*)(\\.)?(([0-9a-fA-F](_*[0-9a-fA-F])*))?)|(\\.([0-9a-fA-F](_*[0-9a-fA-F])*)))([eE][-+]?((([0-9a-fA-F](_*[0-9a-fA-F])*)(\\.)?(([0-9a-fA-F](_*[0-9a-fA-F])*))?)|(\\.([0-9a-fA-F](_*[0-9a-fA-F])*))))?(?![\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]*[^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\,\\[\\]\\{\\}\\/\\#\\\"\\'\\@])",
+			"comment": "(sign) (specifier) [digits (dot) (digits), dot digits] (exponent (sign) [digits (dot) (digits), dot digits]) (whitespace) NOT<(whitespace) quoteless-string-or-property>"
+		},
+		"binary-number": {
+			"name": "constant.numeric.binary.jsonh",
+			"match": "[-+]?0[bB]((([0-1](_*[0-1])*)(\\.)?(([0-1](_*[0-1])*))?)|(\\.([0-1](_*[0-1])*)))([eE][-+]?((([0-1](_*[0-1])*)(\\.)?(([0-1](_*[0-1])*))?)|(\\.([0-1](_*[0-1])*))))?(?![\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]*[^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\,\\[\\]\\{\\}\\/\\#\\\"\\'\\@])",
+			"comment": "(sign) (specifier) [digits (dot) (digits), dot digits] (exponent (sign) [digits (dot) (digits), dot digits]) (whitespace) NOT<(whitespace) quoteless-string-or-property>"
+		},
+		"octal-number": {
+			"name": "constant.numeric.octal.jsonh",
+			"match": "[-+]?0[oO]((([0-7](_*[0-7])*)(\\.)?(([0-7](_*[0-7])*))?)|(\\.([0-7](_*[0-7])*)))([eE][-+]?((([0-7](_*[0-7])*)(\\.)?(([0-7](_*[0-7])*))?)|(\\.([0-7](_*[0-7])*))))?(?![\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]*[^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\,\\[\\]\\{\\}\\/\\#\\\"\\'\\@])",
+			"comment": "(sign) (specifier) [digits (dot) (digits), dot digits] (exponent (sign) [digits (dot) (digits), dot digits]) (whitespace) NOT<(whitespace) quoteless-string-or-property>"
+		},
+		"string": {
+			"patterns": [
+				{ "include": "#verbatim-multi-quoted-string" },
+				{ "include": "#verbatim-quoted-string" },
+				{ "include": "#verbatim-quoteless-string" },
+				{ "include": "#multi-quoted-string" },
+				{ "include": "#quoted-string" },
+				{ "include": "#quoteless-string" }
+			]
+		},
+		"quoted-string": {
+			"name": "string.quoted.jsonh",
+			"begin": "(\"|')",
+			"end": "(\\1)",
+			"beginCaptures": {
+				"0": { "name": "punctuation.definition.string.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.definition.string.end.jsonh" }
+			},
+			"patterns": [
+				{ "include": "#escape" }
+			],
+			"comment": "quote -> backreference"
+		},
+		"multi-quoted-string": {
+			"name": "string.quoted.jsonh",
+			"begin": "((\"|'){3,})",
+			"end": "(\\1)",
+			"beginCaptures": {
+				"0": { "name": "punctuation.definition.string.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.definition.string.end.jsonh" }
+			},
+			"patterns": [
+				{ "include": "#escape" }
+			],
+			"comment": "quote{3+} -> backreference"
+		},
+		"quoteless-string": {
+			"name": "string.unquoted.jsonh",
+			"begin": "(?=([^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\\\\\,\\:\\[\\]\\{\\}\\/\\#\\\"\\'\\@\\n\\r\\x{2028}\\x{2029}]|(\\\\(.|[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]))))",
+			"end": "(?!([^\\\\\\,\\:\\[\\]\\{\\}\\/\\#\\\"\\'\\@\\n\\r\\x{2028}\\x{2029}]|(\\\\(.|[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]))))",
+			"beginCaptures": {
+				"0": { "name": "punctuation.definition.string.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.definition.string.end.jsonh" }
+			},
+			"patterns": [
+				{ "include": "#escape" }
+			],
+			"comment": "[not-whitespace-not-reserved-not-newline, escape]{1+} -> NOT<[not-whitespace-not-reserved-not-newline, escape]>"
+		},
+		"verbatim-quoted-string": {
+			"name": "string.quoted.verbatim.jsonh",
+			"begin": "\\@(\"|')",
+			"end": "(\\1)",
+			"beginCaptures": {
+				"0": { "name": "punctuation.definition.string.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.definition.string.end.jsonh" }
+			},
+			"comment": "verbatim quote -> backreference"
+		},
+		"verbatim-multi-quoted-string": {
+			"name": "string.quoted.verbatim.jsonh",
+			"begin": "\\@((\"|'){3,})",
+			"end": "(\\1)",
+			"beginCaptures": {
+				"0": { "name": "punctuation.definition.string.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.definition.string.end.jsonh" }
+			},
+			"comment": "verbatim quote{3+} -> backreference"
+		},
+		"verbatim-quoteless-string": {
+			"name": "string.unquoted.verbatim.jsonh",
+			"begin": "\\@(?=([^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\\\\\,\\:\\[\\]\\{\\}\\/\\#\\\"\\'\\@\\n\\r\\x{2028}\\x{2029}]|(\\\\(.|[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]))))",
+			"end": "(?!([^\\\\\\,\\:\\[\\]\\{\\}\\/\\#\\\"\\'\\@\\n\\r\\x{2028}\\x{2029}]|(\\\\(.|[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]))))",
+			"beginCaptures": {
+				"0": { "name": "punctuation.definition.string.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.definition.string.end.jsonh" }
+			},
+			"comment": "verbatim [not-whitespace-not-reserved-not-newline, escape]{1+} -> NOT<[not-whitespace-not-reserved-not-newline, escape]>"
+		},
+		"property-name": {
+			"patterns": [
+				{ "include": "#verbatim-multi-quoted-property-name" },
+				{ "include": "#verbatim-quoted-property-name" },
+				{ "include": "#verbatim-quoteless-property-name" },
+				{ "include": "#multi-quoted-property-name" },
+				{ "include": "#quoted-property-name" },
+				{ "include": "#quoteless-property-name" }
+			]
+		},
+		"quoted-property-name": {
+			"name": "string.quoted.jsonh support.type.property-name",
+			"begin": "(\"|')",
+			"end": "(\\1)",
+			"beginCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.end.jsonh" }
+			},
+			"patterns": [
+				{ "include": "#escape" }
+			],
+			"comment": "quote -> backreference"
+		},
+		"multi-quoted-property-name": {
+			"name": "string.quoted.jsonh support.type.property-name",
+			"begin": "((\"|'){3,})",
+			"end": "(\\1)",
+			"beginCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.end.jsonh" }
+			},
+			"patterns": [
+				{ "include": "#escape" }
+			],
+			"comment": "quote{3+} -> backreference"
+		},
+		"quoteless-property-name": {
+			"name": "string.unquoted.jsonh support.type.property-name",
+			"begin": "(?=([^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\\\\\,\\:\\[\\]\\{\\}\\/\\#\\\"\\'\\@\\n\\r\\x{2028}\\x{2029}]|(\\\\(.|[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]))))",
+			"end": "(?!([^\\\\\\,\\:\\[\\]\\{\\}\\/\\#\\\"\\'\\@\\n\\r\\x{2028}\\x{2029}]|(\\\\(.|[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]))))",
+			"beginCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.end.jsonh" }
+			},
+			"patterns": [
+				{ "include": "#escape" }
+			],
+			"comment": "[not-whitespace-not-reserved-not-newline, escape]{1+} -> NOT<[not-whitespace-not-reserved-not-newline, escape]>"
+		},
+		"verbatim-quoted-property-name": {
+			"name": "string.quoted.verbatim.jsonh support.type.property-name",
+			"begin": "\\@(\"|')",
+			"end": "(\\1)",
+			"beginCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.end.jsonh" }
+			},
+			"comment": "verbatim quote -> backreference"
+		},
+		"verbatim-multi-quoted-property-name": {
+			"name": "string.quoted.verbatim.jsonh support.type.property-name",
+			"begin": "\\@((\"|'){3,})",
+			"end": "(\\1)",
+			"beginCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.end.jsonh" }
+			},
+			"comment": "verbatim quote{3+} -> backreference"
+		},
+		"verbatim-quoteless-property-name": {
+			"name": "string.unquoted.verbatim.jsonh support.type.property-name",
+			"begin": "\\@(?=([^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}\\\\\\,\\:\\[\\]\\{\\}\\/\\#\\\"\\'\\@\\n\\r\\x{2028}\\x{2029}]|(\\\\(.|[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]))))",
+			"end": "(?!([^\\\\\\,\\:\\[\\]\\{\\}\\/\\#\\\"\\'\\@\\n\\r\\x{2028}\\x{2029}]|(\\\\(.|[\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]))))",
+			"beginCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.begin.jsonh" }
+			},
+			"endCaptures": {
+				"0": { "name": "punctuation.support.type.property-name.end.jsonh" }
+			},
+			"comment": "verbatim [not-whitespace-not-reserved-not-newline, escape]{1+} -> NOT<[not-whitespace-not-reserved-not-newline, escape]>"
+		},
+		"escape": {
+			"patterns": [
+				{
+					"name": "constant.character.escape.newline.jsonh",
+					"begin": "\\\\$",
+					"end": "^"
+				},
+				{
+					"name": "constant.character.escape.utf16.jsonh",
+					"match": "\\\\u[0-9a-fA-F]{4}"
+				},
+				{
+					"name": "constant.character.escape.short-utf16.jsonh",
+					"match": "\\\\x[0-9a-fA-F]{2}"
+				},
+				{
+					"name": "constant.character.escape.utf32.jsonh",
+					"match": "\\\\U[0-9a-fA-F]{8}"
+				},
+				{
+					"name": "constant.character.escape.character.jsonh",
+					"match": "\\\\[^uxU]"
+				},
+				{
+					"name": "invalid.illegal.jsonh",
+					"match": "\\\\."
+				}
+			]
+		},
+		"invalid": {
+			"name": "invalid.illegal.jsonh",
+			"match": "[^\\x{0009}-\\x{000D} \\x{0085}\\x{00A0}\\x{1680}\\x{2000}-\\x{200A}\\x{2028}\\x{2029}\\x{202F}\\x{205F}\\x{3000}]"
+		}
+	}
+}

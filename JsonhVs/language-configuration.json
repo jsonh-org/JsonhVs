@@ -1,0 +1,31 @@
+{
+    "comments": {
+        // Symbol for a single line comment
+        "lineComment": "//",
+        // Symbols for starting and ending a block comment
+        "blockComment": [ "/*", "*/" ]
+    },
+    // Symbols used as brackets
+    "brackets": [
+        ["{", "}"],
+        ["[", "]"],
+        ["(", ")"]
+    ],
+    // Symbols that are auto closed when typing
+    "autoClosingPairs": [
+        { "open": "{", "close": "}" },
+        { "open": "[", "close": "]" },
+        { "open": "(", "close": ")" },
+        { "open": "\"", "close": "\"", "notIn": [ "string", "comment" ] },
+        { "open": "'", "close": "'", "notIn": [ "string", "comment" ] },
+        { "open": "/*", "close": "*/", "notIn": [ "string" ] }
+    ],
+    // Symbols that can be used to surround a selection
+    "surroundingPairs": [
+        { "open": "{", "close": "}" },
+        { "open": "[", "close": "]" },
+        { "open": "(", "close": ")" },
+        { "open": "\"", "close": "\"" },
+        { "open": "'", "close": "'" }
+    ]
+}

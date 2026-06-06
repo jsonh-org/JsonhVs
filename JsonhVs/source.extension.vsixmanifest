@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="JsonhVs.7f79af32-9fd2-48f9-a60a-a6416ac010c1" Version="1.0" Language="en-US" Publisher="Joyless" />
+        <DisplayName>JsonhVs</DisplayName>
+        <Description>JSON for Humans as a syntax highlighter in Visual Studio.</Description>
+    </Metadata>
+
+    <Installation>
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.14, )">
+            <ProductArchitecture>amd64</ProductArchitecture>
+        </InstallationTarget>
+    </Installation>
+
+    <Prerequisites>
+        <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.14, )" DisplayName="Visual Studio core editor" />
+    </Prerequisites>
+
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+    </Assets>
+</PackageManifest>

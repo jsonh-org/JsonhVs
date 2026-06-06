@@ -1,0 +1,5 @@
+[$RootKey$\TextMate\Repositories]
+"jsonh"="$PackageFolder$\Grammars"
+
+[$RootKey$\TextMate\LanguageConfiguration\GrammarMapping]
+"source.jsonh"="$PackageFolder$\language-configuration.json"
